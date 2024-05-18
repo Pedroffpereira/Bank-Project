@@ -1,0 +1,60 @@
+version: '3.7'
+
+networks:
+  bank:
+    driver: bridge
+
+services:
+  frontend-service:
+    build:
+      context: ./bank-Front
+      dockerfile: Dockerfile
+    networks:
+      - bank
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./bank-Front:/app
+    environment:
+      - EXPO_PUBLIC_BACKEND_API=http://localhost:8080
+    tty: true
+    links:
+      - bank-servicie
+    depends_on:
+      - bank-servicie
+  bank-servicie:
+    build:
+      context: ./Bank
+      dockerfile: Dockerfile
+    networks:
+      - bank
+    ports:
+      - 8080:8080
+    environment:
+      - spring.jpa.hibernate.ddl-auto=create
+      - spring.jpa.properties.hibernate.format_sql=true
+      - spring.datasource.url=jdbc:postgresql://db:5432/postgres
+      - spring.datasource.username=root
+      - spring.datasource.password=example
+      - springdoc.swagger-ui.path=/swagger-ui.html
+      - springdoc.api-docs.path=/api-docs
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: example
+    networks:
+      - bank
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8083:8080
+    networks:
+      - bank

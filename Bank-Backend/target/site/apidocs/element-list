@@ -1,0 +1,16 @@
+com.example.Bank
+com.example.Bank.Configurations
+com.example.Bank.Controllers
+com.example.Bank.Controllers.Error
+com.example.Bank.Controllers.Imp
+com.example.Bank.Entaties
+com.example.Bank.Jwt
+com.example.Bank.Mappers
+com.example.Bank.Mappers.Imp
+com.example.Bank.Repositories
+com.example.Bank.Request
+com.example.Bank.Response
+com.example.Bank.Services
+com.example.Bank.Services.Imp
+com.example.Bank.Utilaties
+com.example.Bank.Utilaties.Imp
