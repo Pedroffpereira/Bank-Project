@@ -1,9 +1,11 @@
 import api from "@/Configuration/api";
 import { useSession } from "@/app/context/ctx";
 import { useState } from "react";
-import { View, TextInput, Text, Pressable } from "react-native";
+import { View, TextInput, Text, Pressable, Alert } from "react-native";
 import { StyleSheet, Animated } from "react-native";
 import { styles } from "@/components/styles/app/styles";
+import alert from "@/components/alert";
+import { useRouter } from "expo-router";
 
 const style = StyleSheet.create({
     text: {
@@ -20,6 +22,7 @@ const style = StyleSheet.create({
 })
 export default function AddChatPage() {
 
+    const router = useRouter();
     const { session } = useSession();
     const [addChatGroupRequest, useAddChatGroupRequest] = useState({
         description: '',
@@ -40,59 +43,63 @@ export default function AddChatPage() {
             ]
         });
     }
-    const [error, userError] = useState({
+    const [error, useError] = useState({
         description: String,
         iban: String,
     })
 
     return (
         <View style={styles.container}>
-            <View>
-                <Text style={styles.text}>Nome Grupo</Text>
-                <TextInput style={styles.input} onChangeText={text => handleDescription(text)} value={addChatGroupRequest.description} />
-                <Text style={styles.error}>{error.description}</Text>
-            </View>
-            <View>
-                <Text style={styles.text}>Iban</Text>
-                <TextInput style={styles.input} onChangeText={text => handleIban(text)} value={addChatGroupRequest.ibans[0]} />
-                <Text style={styles.error}>{error.iban}</Text>
-            </View>
+            <View style={styles.center}>
+                <View >
+                    <Text style={styles.text}>Nome Grupo</Text>
+                    <TextInput style={styles.input} onChangeText={text => handleDescription(text)} value={addChatGroupRequest.description} />
+                    <Text style={styles.error}>{error.description}</Text>
+                </View>
+                <View>
+                    <Text style={styles.text}>Iban</Text>
+                    <TextInput style={styles.input} onChangeText={text => handleIban(text)} value={addChatGroupRequest.ibans[0]} />
+                    <Text style={styles.error}>{error.iban}</Text>
+                </View>
 
-            <Pressable style={styles.button} onPress={async () => {
-                if (addChatGroupRequest.description == '') {
-                    userError({
-                        description: 'A descrição não pode ser vazio'
-                    })
-                    return
-                }
-                if (addChatGroupRequest.ibans[0] == '') {
-                    userError({
-                        iban: 'O iban não pode ser vazio'
-                    })
-                    return
-                }
-                try {
-                    await api.post("/api/v1/chatgroups", addChatGroupRequest,
-                        {
-                            headers: {
-                                Authorization: 'Bearer ' + session
-                            },
-                        }
-                    );
-                } catch (errors) {
-                    if (errors.status == 'NOT_FOUND') {
-                        Alert.alert(
-                            'Erro',
-                            errors.message
-                        )
+                <Pressable style={styles.button} onPress={async () => {
+                    if (addChatGroupRequest.description == '') {
+                        useError({
+                            description: 'A descrição não pode ser vazio'
+                        })
                         return
                     }
-                    useError(error.response.data)
-                }
+                    if (addChatGroupRequest.ibans[0] == '') {
+                        useError({
+                            iban: 'O iban não pode ser vazio'
+                        })
+                        return
+                    }
+                    try {
+                        const { data } = await api.post("/api/v1/chatgroups", addChatGroupRequest,
+                            {
+                                headers: {
+                                    Authorization: 'Bearer ' + session
+                                },
+                            }
+                        );
+                        router.replace("/(app)/chatGroup/" + data.id)
+                    } catch (errors) {
+                        console.log(errors)
+                        if (errors.response.status == 404) {
+                            alert(
+                                'Erro',
+                                errors.response.data.message
+                            )
+                            return
+                        }
+                        useError(error.response.data)
+                    }
 
-            }}>
-                <Text style={styles.button.text}>Adicionar Converça</Text>
-            </Pressable>
+                }}>
+                    <Text style={styles.button.text}>Adicionar Converça</Text>
+                </Pressable>
+            </View>
         </View>
     )
 }

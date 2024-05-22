@@ -1,5 +1,5 @@
 
-import {  StyleSheet, Animated } from "react-native";
+import { StyleSheet, Animated } from "react-native";
 const animated = new Animated.Value(1);
 export const styles = StyleSheet.create({
     container: {
@@ -20,6 +20,9 @@ export const styles = StyleSheet.create({
             marginBottom: 10,
             fontWeight: 'bold',
         }
+    }, 
+    error: {
+        color: 'red'
     },
     box: {
         borderWidth: 1,

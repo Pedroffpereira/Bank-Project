@@ -92,7 +92,7 @@ public class TrasactionServiceImp implements TrasactionService {
         Transaction transactionCurrentAccount = Transaction.builder()
                 .account(account)
                 .amount(amount)
-                .description("Transferencia de " + amount.toString() + "€ para a conta do" + transferAccount.getIban())
+                .description("Transferencia de " + amount.toString() + "€ para a conta do " + transferAccount.getIban())
                 .balance_after_transaction(account.getBalance())
                 .type(Type.CreditTransfer)
                 .build();

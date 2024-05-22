@@ -2,6 +2,7 @@ import React from 'react';
 import { useStorageState } from './useStorageState';
 import api from '@/Configuration/api';
 import { Redirect, useRouter } from 'expo-router';
+import alert from '@/components/alert';
 const AuthContext = React.createContext<{
     signIn: (loginRequest) => void;
     signOut: () => void;
@@ -60,6 +61,9 @@ export function SessionProvider(props: React.PropsWithChildren) {
                             status: 'ok'
                         }
                     } catch (error) {
+                        if (error == '') {
+                            alert('Erro', 'Numero de contrato e password estão erradas');
+                        }
                         return {
                             status: 'ko',
                             messages: error.response.data

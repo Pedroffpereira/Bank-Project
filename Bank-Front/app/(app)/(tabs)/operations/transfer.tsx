@@ -1,11 +1,14 @@
 import api from "@/Configuration/api";
 import { useSession } from "@/app/context/ctx";
+import alert from "@/components/alert";
 import { styles } from "@/components/styles/app/styles";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View, Pressable, Text, TextInput, Alert } from "react-native";
 
 export default function TransferPage() {
 
+    const router = useRouter();
     const { session } = useSession();
     const [errorInput, useErrorInput] = useState({
         iban: '',
@@ -16,7 +19,7 @@ export default function TransferPage() {
         ammount: '',
     });
 
-    
+
     function handleAmmount(ammount: String) {
         useTransferRequest({
             ...transferRequest,
@@ -45,6 +48,14 @@ export default function TransferPage() {
                 </View>
                 <View style={styles.button}>
                     <Pressable onPress={async () => {
+                        if (transferRequest.iban == '') {
+                            useErrorInput({ iban: "O Iban tem de ser preenchido" });
+                            return
+                        }
+                        if (isNaN(transferRequest.ammount)) {
+                            useErrorInput({ ammount: "O Valor tem de ser um numero" });
+                            return
+                        }
                         try {
                             await api.post("/api/v1/operations/transfer", transferRequest,
                                 {
@@ -53,23 +64,20 @@ export default function TransferPage() {
                                     },
                                 }
                             );
+
+                            router.replace("/(app)")
                         } catch (error) {
-                            if (error.status == 'NOT_FOUND') {
-                                Alert.alert(
+                            console.log(error)
+                            if (error.response.status == '404') {
+                                alert(
                                     'Erro',
-                                    error.message
+                                    error.response.data.message
                                 )
                                 return
                             }
-                            useErrorInput({
-                                iban: error.response.data.iban,
-                                ...errorInput
-                            }
+                            useErrorInput(
+                                error.response.data
                             )
-                            useErrorInput({
-                                ammount: error.response.data.ammount,
-                                ...errorInput
-                            })
                         }
 
                     }}>

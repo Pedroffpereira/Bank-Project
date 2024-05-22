@@ -24,7 +24,6 @@ public class WithdrawalDepositRequest {
      * The amount to be withdrawn or deposited.
      */
     @NotNull
-    @NotBlank
     @Min(value = 5)
     Double ammount;
 }

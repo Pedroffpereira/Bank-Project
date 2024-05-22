@@ -48,17 +48,17 @@ export default function SingUp() {
                 <View style={styles.inputLable}>
                     <Text style={styles.inputLable.lable}>Nome(completo)</Text>
                     <TextInput onChangeText={text => handleNome(text)} style={styles.input} />
-                    {error?.name ? (<Text >{error.name}</Text>) : (<Text />)}
+                    {error?.name ? (<Text style={styles.error}>{error.name}</Text>) : (<Text />)}
                 </View><View style={styles.inputLable}>
                     <Text style={styles.inputLable.lable}>Email</Text>
                     <TextInput onChangeText={text => handleEmail(text)} style={styles.input} />
-                    {error?.email ? (<Text >{error.email}</Text>) : (<Text />)}
+                    {error?.email ? (<Text style={styles.error}>{error.email}</Text>) : (<Text />)}
 
                 </View>
                 <View style={styles.inputLable}>
                     <Text style={styles.inputLable.lable}>Password</Text>
                     <TextInput onChangeText={text => handlePassword(text)} secureTextEntry={true} style={styles.input} />
-                    {error?.password ? (<Text >{error.password}</Text>) : (<Text />)}
+                    {error?.password ? (<Text style={styles.error}>{error.password}</Text>) : (<Text />)}
                 </View>
                 <View style={styles.buttonDiv}>
                     <Pressable

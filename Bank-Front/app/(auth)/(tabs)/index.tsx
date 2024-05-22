@@ -39,19 +39,18 @@ export default function Login() {
                     <Text style={styles.inputLable.lable}>Numero de Contrato</Text>
                     <TextInput style={styles.input} onChangeText={text => handleContract(text)} />
 
-                    {error?.contract ? (<Text >{error.contract}</Text>) : (<Text />)}
+                    {error?.contract ? (<Text style={styles.error}>{error.contract}</Text>) : (<Text />)}
                 </View>
                 <View style={styles.inputLable}>
                     <Text style={styles.inputLable.lable}>Password</Text>
                     <TextInput secureTextEntry={true} style={styles.input} onChangeText={text => handlePassword(text)} />
-                    {error?.password ? (<Text >{error.password}</Text>) : (<Text />)}
+                    {error?.password ? (<Text style={styles.error}>{error.password}</Text>) : (<Text />)}
                 </View>
                 <View style={styles.buttonDiv}>
                     <Pressable
                         style={styles.button} onPressIn={fadeIn} onPressOut={fadeOut} style={styles.button} onPress={async () => {
                             const response = await signIn(loginRequest);
                             if (response.status != 'ok') {
-                                console.log(response.messages)
                                 useError(response.messages)
                                 return;
                             }

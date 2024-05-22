@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, ScrollView, SafeAreaView } from "react-native";
 import TrasactionCard from "./card";
 import { StyleSheet, Animated } from "react-native";
 const styles = StyleSheet.create({
@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         marginBottom: 5,
+
     },
     title: {
         color: '#fff',
@@ -27,23 +28,24 @@ const styles = StyleSheet.create({
 })
 export default function TrasactionsList({ trasactions = [] }) {
     return (
-        <View >
-            <View style={styles.container}>
-                <Text style={styles.title}>Ultimos movimentos</Text>
-                <Pressable style={styles.button}>
+        <ScrollView >
+            <View >
+                <View style={styles.container}>
+                    <Text style={styles.title}>Ultimos movimentos</Text>
+                    {/* <Pressable style={styles.button}>
                     <Text style={styles.buttonText}>
                         Ver tudo
                     </Text>
-                </Pressable>
+                </Pressable> */}
+                </View>
+                {
+                    trasactions.map((trasaction, index) => (
+                        <View key={index} style={styles.list}>
+                            <TrasactionCard key={index} trasaction={trasaction} />
+                        </View>
+                    ))
+                }
             </View>
-            {
-                trasactions.map((trasaction, index) => (
-                    <View key={index} style={styles.list}>
-                        <TrasactionCard key={index} trasaction={trasaction} />
-                    </View>
-                ))
-            }
-
-        </View>
+        </ScrollView>
     );
 }

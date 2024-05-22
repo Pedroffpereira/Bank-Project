@@ -1,6 +1,6 @@
 import api from "@/Configuration/api";
 import UserDTO from "@/DTOs/userDTO";
-import { StyleSheet, Animated } from "react-native";
+import { StyleSheet, Animated, ScrollView } from "react-native";
 import { useSession } from "@/app/context/ctx";
 import MessageCard from "@/components/Pages/app/chat/MessageCard";
 import { useLocalSearchParams } from "expo-router";
@@ -25,7 +25,12 @@ export default function ChatGroupPage() {
             borderWidth: 1,
             borderRadius: 50,
             padding: 10
-        }
+        },
+        title: {
+            marginBottom: 20,
+            color: '#fff',
+            fontSize: 20
+        },
     })
     const { session } = useSession();
     const [chatgroup, setChatgroup] = useState({
@@ -38,7 +43,9 @@ export default function ChatGroupPage() {
     const [messageRequest, setMessageRequest] = useState({
         text: ''
     });
-
+    const [error, setError] = useState({
+        text: ''
+    });
     function handleText(text) {
         setMessageRequest({
             text: text
@@ -72,30 +79,44 @@ export default function ChatGroupPage() {
     return (
         <View style={styles.container}>
             <View>
-                {
-                    chatgroup.messages.length > 0 && chatgroup.messages.map((message, index) => (
-
-                        message.iban == user.iban ? <MessageCard key={index} backgroundColor="#ddf" message={message} /> : <MessageCard key={index} backgroundColor="rgb(234, 240, 246)" message={message} />
-                    ))
-                }
+                <Text style={styles.title}>{chatgroup.description}</Text>
             </View>
+
+            <ScrollView>
+                <View>
+                    {
+                        chatgroup.messages.length > 0 && chatgroup.messages.map((message, index) => (
+
+                            message.iban == user.iban ? <MessageCard key={index} backgroundColor="#ddf" message={message} /> : <MessageCard key={index} backgroundColor="rgb(234, 240, 246)" message={message} />
+                        ))
+                    }
+                </View>
+            </ScrollView>
             <View style={
                 style.messageAction
             }>
                 <Text style={style.text}>Mensagem</Text>
                 <TextInput style={style.messageInput} onChangeText={(text) => handleText(text)} value={messageRequest.text} />
+                <Text style={styles.error}>{error.text}</Text>
                 <View>
                     <Pressable style={styles.button} onPress={async () => {
-                        await api.post("/api/v1/chatgroups/" + chatGroup + "/message", messageRequest,
-                            {
-                                headers: {
-                                    Authorization: 'Bearer ' + session
-                                },
-                            }
-                        );
-                        setMessageRequest({
-                            text: ''
-                        })
+                        try {
+                            await api.post("/api/v1/chatgroups/" + chatGroup + "/message", messageRequest,
+                                {
+                                    headers: {
+                                        Authorization: 'Bearer ' + session
+                                    },
+                                }
+                            );
+                            setMessageRequest({
+                                text: ''
+                            })
+                        } catch (error) {
+                            console.log(error)
+                            setError({
+                                text: error.response.data.text
+                            })
+                        }
                     }}>
                         <Text style={style.textButton}>Enviar Mensagem</Text>
                     </Pressable>

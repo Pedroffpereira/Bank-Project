@@ -1,11 +1,13 @@
 import api from "@/Configuration/api";
 import { useSession } from "@/app/context/ctx";
 import { styles } from "@/components/styles/app/styles";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View, Text, Pressable, TextInput } from "react-native";
 
 export default function WithdrawDepositInput({ url }) {
 
+    const router = useRouter();
     const { session } = useSession();
     const [depositRequest, useDepositRequest] = useState({
         ammount: Number,
@@ -27,17 +29,20 @@ export default function WithdrawDepositInput({ url }) {
             </View>
             <Pressable style={styles.button} onPress={async () => {
                 useError("")
-                useError('')
                 if (depositRequest.ammount == "") {
                     useError("O numero tem que ser preenchido");
                     return
                 }
-                if (depositRequest.ammount < 5) {
+                if (isNaN(depositRequest.ammount)) {
+                    useError("O Valor tem de ser um numero");
+                    return
+                }
+                if (depositRequest.ammount < 0) {
 
                     useError("O numero tem de ser possitivo");
                     return
                 }
-                
+
                 try {
                     await api.post(url, depositRequest,
                         {
@@ -46,6 +51,7 @@ export default function WithdrawDepositInput({ url }) {
                             },
                         }
                     );
+                    router.replace("/(app)")
                 } catch (errors) {
                     if (errors.status == 'NOT_FOUND') {
                         Alert.alert(
@@ -54,7 +60,7 @@ export default function WithdrawDepositInput({ url }) {
                         )
                         return
                     }
-                    useError(errors.response.data.ammout)
+                    useError(errors.response.data.message)
                 }
 
 

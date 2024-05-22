@@ -3,6 +3,7 @@ package com.example.Bank.Request;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,12 +25,12 @@ public class TransferRequest {
      */
     @NotNull
     @NotBlank
+    @Size(min = 16, max = 36)
     String iban;
     /**
      * The amount to be transferred.
      */
     @NotNull
-    @NotBlank
     @Min(value = 5)
     Double ammount;
 }

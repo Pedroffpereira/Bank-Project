@@ -47,12 +47,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Handles UsernameNotFoundException, IllegalAccessError, and
-     * AuthenticationException exceptions
-     * and returns a response entity with an ApiError instance containing the error
-     * details.
-     * 
-     * @param ex The exception instance.
+     * Handles IllegalAccessError exceptions and returns a response entity with an
+     * ApiError
+     * instance containing the error details.
+     *
+     * @param ex The IllegalAccessError exception instance.
      * @return A response entity with an ApiError instance containing the error
      *         details.
      */
@@ -63,6 +62,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
+    /**
+     * Handles UsernameNotFoundException exceptions and returns a response entity
+     * with an ApiError
+     * instance containing the error details.
+     *
+     * @param ex The UsernameNotFoundException exception instance.
+     * @return A response entity with an ApiError instance containing the error
+     *         details.
+     */
     @ExceptionHandler({ UsernameNotFoundException.class })
     protected ResponseEntity<Object> handleEntityNotFound(UsernameNotFoundException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
@@ -70,6 +78,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
+    /**
+     * Handles AuthenticationException exceptions and returns a response entity with
+     * an ApiError
+     * instance containing the error details.
+     *
+     * @param ex The AuthenticationException exception instance.
+     * @return A response entity with an ApiError instance containing the error
+     *         details.
+     */
     @ExceptionHandler({ AuthenticationException.class })
     protected ResponseEntity<Object> handleEntityNotFound(AuthenticationException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
