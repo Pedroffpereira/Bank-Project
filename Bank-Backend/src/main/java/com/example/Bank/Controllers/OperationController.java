@@ -61,7 +61,7 @@ public interface OperationController {
          *         withdrawal transaction.
          */
         public ResponseEntity<TransactionResponse> withdrawal(@AuthenticationPrincipal Jwt jwt,
-                        @RequestBody @Valid WithdrawalDepositRequest withdrawalDepositRequest);
+                        @RequestBody @Valid WithdrawalDepositRequest withdrawalDepositRequest) throws IllegalAccessError;
 
         /**
          * Handle transfer operation.

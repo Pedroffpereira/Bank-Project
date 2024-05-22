@@ -20,14 +20,13 @@ public class TransactionRepositoryTest {
     private TransactionRepository transactionRepository;
 
     @Test
-    void testFindByProductCategoryIdAndOrderId_ReturnsOrdersItemList() {
+    void testFindByAccount_AccountNumber() {
 
         List<Transaction> transactions = new ArrayList<Transaction>();
 
         transactions.add(Transaction.builder()
 
-                .build()
-        );
+                .build());
 
         PageRequest pageRequest = PageRequest.of(0, 10);
 

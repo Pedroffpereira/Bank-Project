@@ -9,6 +9,7 @@ import com.example.Bank.Repositories.AccountRepository;
 import com.example.Bank.Request.TransferRequest;
 import com.example.Bank.Response.TransactionResponse;
 import com.example.Bank.Services.TransferService;
+import com.example.Bank.Services.TrasactionService;
 
 /**
  * Service implementation for performing inter-account transfers.
@@ -35,7 +36,7 @@ public class InterTransferServiceImp implements TransferService {
     /**
      * The service for performing transactions.
      */
-    private final TrasactionServiceImp trasactionService;
+    private final TrasactionService trasactionService;
 
     /**
      * Constructs a new InterTransferServiceImp instance with the specified
@@ -69,7 +70,9 @@ public class InterTransferServiceImp implements TransferService {
         Account account = accountOptional.get();
 
         Optional<Account> transferAccountOptional = accountRepository.findByIban(transferRequest.getIban());
-        Account transferAccount = transferAccountOptional.get();
+        if (transferRequest.getIban().equals(account.getIban())) {
+            throw new IllegalAccessError("Não pode enviar dinheiro para si");
+        }
         if (transferAccountOptional.isEmpty()) {
             throw new IllegalAccessError("Conta para transferir não existe");
         }
@@ -77,7 +80,7 @@ public class InterTransferServiceImp implements TransferService {
         if (account.getBalance() < transferRequest.getAmmount()) {
             throw new IllegalAccessError("Montante da operação e maior do que tem na conta");
         }
-
+        Account transferAccount = transferAccountOptional.get();
         account.setBalance(account.getBalance() - transferRequest.getAmmount());
 
         transferAccount.setBalance(transferAccount.getBalance() + transferRequest.getAmmount());

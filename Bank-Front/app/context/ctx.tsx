@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStorageState } from './useStorageState';
 import api from '@/Configuration/api';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 const AuthContext = React.createContext<{
     signIn: (loginRequest) => void;
     signOut: () => void;
@@ -37,20 +37,41 @@ export function SessionProvider(props: React.PropsWithChildren) {
         <AuthContext.Provider
             value={{
                 signIn: async (loginRequest) => {
-                    // Perform sign-in logic here
-                    const { data } = await api.post("/api/v1/users/login", loginRequest);
-                    setSession(data.token);
+                    try {
+                        const { data } = await api.post("/api/v1/users/login", loginRequest);
+                        setSession(data.token);
+                        return {
+                            status: 'ok'
+                        }
+                    } catch (error) {
+                        return {
+                            status: 'ko',
+                            messages: error.response.data
+                        }
+                    }
                 },
                 signOut: () => {
                     setSession(null);
                 },
                 signUp: async (signUpRequest) => {
-                    await api.post("/api/v1/users/registation", signUpRequest);
+                    try {
+                        await api.post("/api/v1/users/registation", signUpRequest);
+                        return {
+                            status: 'ok'
+                        }
+                    } catch (error) {
+                        return {
+                            status: 'ko',
+                            messages: error.response.data
+                        }
+                    }
+
                 },
                 session,
                 isLoading,
-            }}>
+            }
+            } >
             {props.children}
-        </AuthContext.Provider>
+        </ AuthContext.Provider>
     );
 }

@@ -91,15 +91,13 @@ public class ChatGroupServiceImp implements ChatGroupService {
      */
     @Override
     public List<ChatGroupResponse> getChatGroup(String contractNumber, Integer page, Integer size) {
-        Optional<List<ChatGroup>> optionalChatGroup = this.chatGroupRepository.findByAccounts_AccountNumber(
+        List<ChatGroup> chatGroups = this.chatGroupRepository.findByAccounts_AccountNumber(
                 contractNumber,
                 PageRequest.of(page, size));
 
-        if (optionalChatGroup.isEmpty()) {
-            throw new IllegalAccessError("Grupo não existe");
-        }
         List<ChatGroupResponse> ChatGroupResponseList = new ArrayList<ChatGroupResponse>();
-        for (ChatGroup chatGroup : optionalChatGroup.get()) {
+
+        for (ChatGroup chatGroup : chatGroups) {
             ChatGroupResponseList.add(chatGroupMapper.toDTO(chatGroup));
         }
 
@@ -139,9 +137,13 @@ public class ChatGroupServiceImp implements ChatGroupService {
         Optional<Account> accountOptional = accountRepository.findByAccountNumber(contractNumber);
         List<Account> accounts = new ArrayList<Account>();
         for (String iban : createChatGroup.getIbans()) {
+            if (iban.equals(accountOptional.get().getIban())) {
+                throw new IllegalAccessError("Não pode enviar mensagens para si");
+            }
+
             Optional<Account> outherAccount = this.accountRepository.findByIban(iban);
             if (outherAccount.isEmpty()) {
-                throw new IllegalAccessError("iban não existe");
+                throw new IllegalAccessError("Conta que deseja enviar mensagem não existe");
             }
             accounts.add(outherAccount.get());
         }

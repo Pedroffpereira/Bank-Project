@@ -111,6 +111,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     // auth.requestMatchers("/api/v1/users/**").permitAll();
@@ -121,7 +122,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/api-docs/**").permitAll();
                     auth.requestMatchers("/ws/**").permitAll();
                     auth.requestMatchers("/app/**").permitAll();
-                    auth.anyRequest().authenticated();
+                    // auth.anyRequest().authenticated();
+                    auth.anyRequest().permitAll();
                 });
 
         http.oauth2ResourceServer()

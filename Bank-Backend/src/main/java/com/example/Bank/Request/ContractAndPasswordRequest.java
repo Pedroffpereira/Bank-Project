@@ -1,5 +1,6 @@
 package com.example.Bank.Request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +23,12 @@ public class ContractAndPasswordRequest {
      * The user's contract number to identifier.
      */
     @NotNull
+    @NotBlank
     String contract;
     /**
      * The user's password.
      */
     @NotNull
+    @NotBlank
     String password;
 }

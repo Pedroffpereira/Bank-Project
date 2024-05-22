@@ -1,19 +1,18 @@
 
-import {  StyleSheet, Animated } from "react-native";
+import { StyleSheet, Animated } from "react-native";
 const animated = new Animated.Value(1);
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         // alignItems: 'center',
-        justifyContent: 'center',
         alignSelf: 'stretch',
         padding: 10,
         backgroundColor: '#00559a'
     },
     title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginBottom: 15,
+        marginBottom: 20,
+        color: '#fff',
+        fontSize: 20
     },
     inputLable: {
         padding: 15,
@@ -26,11 +25,6 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 25,
     },
-    input: {
-        borderWidth: 1,
-        paddingVertical: 13,
-        paddingHorizontal: 15,
-    },
 
     buttonDiv: {
         alignItems: 'center'
@@ -42,7 +36,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 15,
         text: {
-
+            textAlign: 'center',
             color: "rgb(255,255,255)",
         }
     },
@@ -51,6 +45,26 @@ export const styles = StyleSheet.create({
         height: 1,
         width: '80%',
     },
+    text: {
+        color: '#fff'
+    },
+    input: {
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 50,
+        padding: 10,
+        marginTop: 10,
+    },
+    error: {
+        color: 'red'
+    },
+    center: {
+        margin: 'auto',
+    },
+
+    space: {
+        marginVertical: 15,
+    }
 });
 export const fadeOut = () => {
     Animated.timing(animated, {

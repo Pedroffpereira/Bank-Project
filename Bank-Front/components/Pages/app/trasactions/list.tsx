@@ -16,11 +16,16 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'rgb(47 161 255)',
+    },
+    list: {
+        marginVertical: 10,
+        display: 'flex',
+        flexDirection: 'column-reverse'
     }
 
+
 })
-export default function TrasactionsList({ trasactions}) {
-    console.log()
+export default function TrasactionsList({ trasactions = [] }) {
     return (
         <View >
             <View style={styles.container}>
@@ -31,10 +36,14 @@ export default function TrasactionsList({ trasactions}) {
                     </Text>
                 </Pressable>
             </View>
-            {/* trasactions.map((item) => {
-                <TrasactionCard trasaction={item} />
-            }) */}
-            
+            {
+                trasactions.map((trasaction, index) => (
+                    <View key={index} style={styles.list}>
+                        <TrasactionCard key={index} trasaction={trasaction} />
+                    </View>
+                ))
+            }
+
         </View>
     );
 }

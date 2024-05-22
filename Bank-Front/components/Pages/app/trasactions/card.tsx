@@ -36,18 +36,17 @@ const styles = StyleSheet.create({
     },
 
 })
-export default function TrasactionCard() {
+export default function TrasactionCard({ trasaction }) {
     return (
         <View style={styles.row}>
             <View style={styles.columns}>
-                <Text style={styles.column.left.text}>Transferencia de 10€ </Text>
-                <Text style={styles.column.left.lable}>12/05</Text>
+                <Text style={styles.column.left.text}>{trasaction.description}</Text>
             </View>
 
 
             <View style={styles.columns}>
-                <Text style={styles.column.right.text}>-3,00€</Text>
-                <Text style={styles.column.right.lable}>100€</Text>
+                <Text style={styles.column.right.text}>{trasaction.amount}€</Text>
+                <Text style={styles.column.right.lable}>{trasaction.balance_after_transaction}€</Text>
             </View>
         </View>
     )

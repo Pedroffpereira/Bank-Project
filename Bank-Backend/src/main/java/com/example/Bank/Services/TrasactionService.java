@@ -67,4 +67,14 @@ public interface TrasactionService {
      *         transaction.
      */
     public TransactionResponse InsertDeposit(Account account, Double amount);
+
+    /**
+     * Inserts a deposit transaction for outside account.
+     * 
+     * @param account The account to which the deposit is made.
+     * @param amount  The amount to deposit.
+     * @return A TransactionResponse object representing the inserted deposit
+     *         transaction.
+     */
+    public TransactionResponse insertOutTransfer(Account account, Double amount);
 }

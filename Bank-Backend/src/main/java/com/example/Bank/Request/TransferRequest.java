@@ -1,6 +1,8 @@
 package com.example.Bank.Request;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +22,14 @@ public class TransferRequest {
     /**
      * The IBAN (International Bank Account Number) of the recipient.
      */
+    @NotNull
+    @NotBlank
     String iban;
     /**
      * The amount to be transferred.
      */
-    @Min(value = 0)
+    @NotNull
+    @NotBlank
+    @Min(value = 5)
     Double ammount;
 }

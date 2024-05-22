@@ -43,7 +43,6 @@ public class ChatGroupMapper implements DTOMapper<ChatGroup, ChatGroupResponse> 
         DTOMapper<Message, MessageResponse> messageMapper = new MessageMapper();
         List<MessageResponse> messageReponseList = new ArrayList<MessageResponse>();
         List<String> ibans = new ArrayList<String>();
-        System.out.println("antes");
         if (chatGroup.getMessages() != null) {
             for (Message message : chatGroup.getMessages()) {
                 messageReponseList.add(messageMapper.toDTO(message));

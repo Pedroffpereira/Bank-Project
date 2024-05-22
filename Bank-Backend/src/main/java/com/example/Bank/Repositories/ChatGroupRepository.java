@@ -57,5 +57,5 @@ public interface ChatGroupRepository extends JpaRepository<ChatGroup, UUID> {
      * @return An Optional containing a list of chat groups associated with the
      *         specified account number, or empty if not found.
      */
-    public Optional<List<ChatGroup>> findByAccounts_AccountNumber(String accountNumber, Pageable pageable);
+    public List<ChatGroup> findByAccounts_AccountNumber(String accountNumber, Pageable pageable);
 }

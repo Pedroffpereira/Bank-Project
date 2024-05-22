@@ -111,6 +111,21 @@ public class TrasactionServiceImp implements TrasactionService {
 
     }
 
+    @Override
+    public TransactionResponse insertOutTransfer(Account account, Double amount) {
+
+        Transaction transactionCurrentAccount = Transaction.builder()
+                .account(account)
+                .amount(amount)
+                .description("Transferencia de " + amount.toString() + "€ para conta externa")
+                .balance_after_transaction(account.getBalance())
+                .type(Type.CreditTransfer)
+                .build();
+
+        return transactionsMapper.toDTO(this.transactionRepository.save(transactionCurrentAccount));
+
+    }
+
     /**
      * Inserts a withdrawal transaction for the specified account.
      * 

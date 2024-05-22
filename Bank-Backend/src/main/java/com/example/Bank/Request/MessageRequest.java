@@ -1,5 +1,7 @@
 package com.example.Bank.Request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +21,7 @@ public class MessageRequest {
     /**
      * The text of the message.
      */
+    @NotNull
+    @NotBlank
     String text;
 }

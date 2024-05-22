@@ -56,8 +56,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @return A response entity with an ApiError instance containing the error
      *         details.
      */
-    @ExceptionHandler({ UsernameNotFoundException.class, IllegalAccessError.class, AuthenticationException.class })
-    protected ResponseEntity<Object> handleEntityNotFound(IllegalAccessException ex) {
+    @ExceptionHandler({ IllegalAccessError.class })
+    protected ResponseEntity<Object> handleEntityNotFound(IllegalAccessError ex) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler({ UsernameNotFoundException.class })
+    protected ResponseEntity<Object> handleEntityNotFound(UsernameNotFoundException ex) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler({ AuthenticationException.class })
+    protected ResponseEntity<Object> handleEntityNotFound(AuthenticationException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);

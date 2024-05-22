@@ -2,11 +2,13 @@ package com.example.Bank.Utilaties.Imp;
 
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.Bank.Utilaties.IbanGeneratorUtility;
-
+import com.example.Bank.Configurations.BankSettings;
 import lombok.Data;
+
 /**
  * Implementation of the IBAN generator utility.
  * 
@@ -15,6 +17,9 @@ import lombok.Data;
 @Component
 @Data
 public class IbanGeneratorUtilityImp implements IbanGeneratorUtility {
+    @Autowired
+    BankSettings BankSettings;
+
     /**
      * Generates a random account number.
      * 
@@ -37,12 +42,11 @@ public class IbanGeneratorUtilityImp implements IbanGeneratorUtility {
      */
     @Override
     public String generate(String accountNumber) {
-        String countryCode = "PT";
-        String checkDigit = "50";
-        String bankCode = "0001";
-        String brenchCode = "0123";
-        String nationalDigit = "54";
-        // this will convert any number sequence into 6 character.
+        String countryCode = BankSettings.getCountryCode();
+        String checkDigit = BankSettings.getCheckDigit();
+        String bankCode = BankSettings.getBankCode();
+        String brenchCode = BankSettings.getBrenchCode();
+        String nationalDigit = BankSettings.getNationalDigit();
         return countryCode + checkDigit + bankCode + brenchCode + accountNumber + nationalDigit;
     }
 }

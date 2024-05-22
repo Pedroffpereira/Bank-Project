@@ -1,6 +1,7 @@
 package com.example.Bank.Request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,16 +25,19 @@ public class CreateAccount {
      * The name of the user.
      */
     @NotNull
+    @NotBlank
     String name;
     /**
      * The email address of the user.
      */
     @NotNull
+    @NotBlank
     @Email
     String email;
     /**
      * The password for the user's account.
      */
     @NotNull
+    @NotBlank
     String password;
 }

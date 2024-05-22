@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.Bank.Configurations.BankSettings;
 import com.example.Bank.Entaties.Account;
 import com.example.Bank.Repositories.AccountRepository;
 import com.example.Bank.Request.TransferRequest;
@@ -31,6 +32,8 @@ import com.example.Bank.Services.TransferService;
  */
 @Service
 public class OperationsServiceImp implements OperationsService {
+
+    private final BankSettings bankSettings;
     /**
      * The repository for accessing account data.
      */
@@ -47,9 +50,11 @@ public class OperationsServiceImp implements OperationsService {
      * @param accountRepository The repository for accessing account data.
      * @param trasactionService The service for performing transactions.
      */
-    public OperationsServiceImp(AccountRepository accountRepository, TrasactionServiceImp trasactionService) {
+    public OperationsServiceImp(AccountRepository accountRepository, TrasactionServiceImp trasactionService,
+            BankSettings bankSettings) {
         this.accountRepository = accountRepository;
         this.trasactionService = trasactionService;
+        this.bankSettings = bankSettings;
     }
 
     /**
@@ -84,7 +89,8 @@ public class OperationsServiceImp implements OperationsService {
      *                            insufficient.
      */
     @Override
-    public TransactionResponse withdrawal(String contractNumber, WithdrawalDepositRequest withdrawalDepositRequest) {
+    public TransactionResponse withdrawal(String contractNumber, WithdrawalDepositRequest withdrawalDepositRequest)
+            throws IllegalAccessError {
 
         Optional<Account> accountOptional = accountRepository.findByAccountNumber(contractNumber);
 
@@ -112,8 +118,14 @@ public class OperationsServiceImp implements OperationsService {
 
     @Override
     public TransactionResponse Transfer(String contractNumber, TransferRequest transferRequest) {
-        TransferService transferService = new InterTransferServiceImp(accountRepository, trasactionService);
-
+        TransferService transferService;
+        if (transferRequest.getIban().subSequence(0, 8).toString()
+                .equals(bankSettings.getCountryCode() + bankSettings.getCheckDigit()
+                        + bankSettings.getBankCode())) {
+            transferService = new InterTransferServiceImp(accountRepository, trasactionService);
+        } else {
+            transferService = new OutherBankTransferServiceImp(accountRepository, trasactionService);
+        }
         return transferService.Transfer(contractNumber, transferRequest);
     }
 }

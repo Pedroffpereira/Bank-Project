@@ -44,18 +44,29 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Inicio',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerShown: false
+          title: 'Lista de Conversa',
+          tabBarIcon: ({ color }) => <TabBarIcon name="wechat" color={color} />,
+          headerShown: false,
+          unmountOnBlur: true
         }}
       />
 
       <Tabs.Screen
-        name="chatGroup"
+        name="AddChat"
         options={{
-          title: 'Chat',
+          title: 'Adicionar Conversa',
+          tabBarIcon: ({ color }) => <TabBarIcon name="plus-circle" color={color} />,
+          headerShown: false,
+          unmountOnBlur: true
+        }}
+      />
+      <Tabs.Screen
+        name="[chatGroup]"
+        options={{
+          title: 'Adicionar conversa',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerShown: false
+          headerShown: false,
+          href: null
         }}
       />
     </Tabs>

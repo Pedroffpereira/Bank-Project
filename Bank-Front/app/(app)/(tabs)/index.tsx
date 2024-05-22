@@ -10,6 +10,9 @@ import Balance from "@/components/Pages/app/balance";
 import Operations from "@/components/Pages/app/operations";
 
 export default function TabOneScreen() {
+
+
+    
     const { signOut, session } = useSession();
 
     const [user, setUser] = useState<UserDTO>(new UserDTO);
@@ -21,24 +24,16 @@ export default function TabOneScreen() {
                 },
             }).catch(function (error) {
                 signOut()
+                return;
             });
             setUser(user.data)
         }
         getUser();
     }, []);
 
-    const router = useRouter();
     return (
         <View style={styles.container}>
             <Balance accountNumber={user.accountNumber} balance={user.balance + "€"} />
-            <Pressable onPress={() => {
-                signOut();
-
-                router.replace("/(auth)")
-            }}>
-                <Text>out</Text>
-                
-            </Pressable>
             <Operations />
             <TrasactionsList trasactions={user.transactions} />
         </View>

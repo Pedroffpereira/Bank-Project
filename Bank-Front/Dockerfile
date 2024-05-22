@@ -1,5 +1,5 @@
 # pull base image
-FROM node:18
+FROM node:18-alpine
 
 EXPOSE 8081
 

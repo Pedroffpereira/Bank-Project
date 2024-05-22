@@ -7,14 +7,14 @@ networks:
 services:
   frontend-service:
     build:
-      context: ./bank-Front
+      context: ./Bank-Front
       dockerfile: Dockerfile
     networks:
       - bank
     ports:
       - '8081:8081'
     volumes:
-      - ./bank-Front:/app
+      - ./Bank-Front:/app
     environment:
       - EXPO_PUBLIC_BACKEND_API=http://localhost:8080
     tty: true
@@ -24,7 +24,7 @@ services:
       - bank-servicie
   bank-servicie:
     build:
-      context: ./Bank
+      context: ./Bank-Backend
       dockerfile: Dockerfile
     networks:
       - bank

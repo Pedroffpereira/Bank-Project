@@ -6,6 +6,7 @@ import { Pressable, Text, View } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useSession } from '@/app/context/ctx';
+import Header from '@/components/Pages/app/Header';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -46,16 +47,31 @@ export default function TabLayout() {
         options={{
           title: 'Inicio',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerShown: false
+          headerShown: true,
+          header: Header,
+          unmountOnBlur: true
         }}
       />
 
       <Tabs.Screen
         name="chatGroup"
         options={{
-          title: 'Chat',
-          tabBarIcon: ({ color }) => <TabBarIcon name="" color={color} />,
-          headerShown: false
+          title: 'Conversas',
+          tabBarIcon: ({ color }) => <TabBarIcon name="wechat" color={color} />,
+          headerShown: true,
+          header: Header,
+          unmountOnBlur: true
+        }}
+      />
+
+      <Tabs.Screen
+        name="operations"
+        options={{
+          title: 'Operações',
+          tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />,
+          headerShown: true,
+          header: Header,
+          unmountOnBlur: true
         }}
       />
     </Tabs>
